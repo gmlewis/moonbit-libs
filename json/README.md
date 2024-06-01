@@ -1,9 +1,9 @@
-# mizchi/json
+# gmlewis/json
 
 json utils
 
 ```bash
-$ moon add mizchi/json
+$ moon add gmlewis/json
 ```
 
 moon.pkg.json
@@ -14,7 +14,7 @@ Avoid `json` to use builtin `@json`
 {
   "import": [
     {
-      "path": "mizchi/json",
+      "path": "gmlewis/json",
       "alias": "jsonutil"
     }
   ]
