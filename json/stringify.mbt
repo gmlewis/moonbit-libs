@@ -71,7 +71,7 @@ pub fn stringify(
               ""
             }
           let vr = stringify(v, depth=depth + 1, ~spaces, ~newline)
-          s += String::make((depth + 1) * spaces, ' ') + "\(k):\(pad)\(vr)\(last)"
+          s += String::make((depth + 1) * spaces, ' ') + "\"\(k)\":\(pad)\(vr)\(last)"
         },
       )
       s += String::make(depth * spaces, ' ') + "}"
@@ -125,18 +125,18 @@ test {
     s,
     content=
       #|{
-      #|  a: 1.1,
-      #|  b: [
+      #|  "a": 1.1,
+      #|  "b": [
       #|    1,
       #|    2,
       #|    3
       #|  ],
-      #|  c: {
-      #|    d: 4
+      #|  "c": {
+      #|    "d": 4
       #|  },
-      #|  d: null,
-      #|  e: true,
-      #|  f: false
+      #|  "d": null,
+      #|  "e": true,
+      #|  "f": false
       #|}
     ,
   )?
@@ -150,7 +150,7 @@ test {
     ,
   ).unwrap()
   let s = stringify(j)
-  inspect(s, content="{a:1}")?
+  inspect(s, content="{\"a\":1}")?
 }
 
 fn is_int(x : Double) -> Bool {
@@ -179,5 +179,8 @@ test {
     j,
     content="Object(Map::[(\"val\", Number(1.0)), (\"child\", Object(Map::[(\"val\", Number(2.0)), (\"child\", Null)]))])",
   )?
-  inspect(stringify(j), content="{val:1,child:{val:2,child:null}}")?
+  inspect(
+    stringify(j),
+    content="{\"val\":1,\"child\":{\"val\":2,\"child\":null}}",
+  )?
 }
