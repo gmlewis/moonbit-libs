@@ -92,13 +92,15 @@ impl ToJson for Array[ToJson] with to_json(self) {
 
 }
 
-impl ToJson for @map.Map[String, ToJson] with to_json(self) {
+impl ToJson for @immut/sorted_map.Map[String, ToJson] with to_json(self) {
   @json.JsonValue::Object(self.map(fn(v) { v.to_json() }))
 }
 
 pub fn from_entries(members : Array[(String, ToJson)]) -> @json.JsonValue {
   @json.JsonValue::Object(
-    @map.Map::from_array(members.map(fn(k) { (k.0, k.1.to_json()) })),
+    @immut/sorted_map.Map::from_array(
+      members.map(fn(k) { (k.0, k.1.to_json()) }),
+    ),
   )
 }
 
