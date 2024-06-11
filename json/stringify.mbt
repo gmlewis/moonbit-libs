@@ -8,13 +8,19 @@ pub impl ToJson for Int with to_json(self) {
 
 pub impl ToJson for String with to_json(self) { @json.JsonValue::String(self) }
 
-pub impl ToJson for Bool with to_json(self) { @json.JsonValue::Boolean(self) }
+pub impl ToJson for Bool with to_json(self) {
+  if self {
+    @json.JsonValue::True
+  } else {
+    @json.JsonValue::False
+  }
+}
 
 pub impl ToJson for Double with to_json(self) { @json.JsonValue::Number(self) }
 
 pub impl ToJson for Unit with to_json(_self) { @json.JsonValue::Null }
 
-pub impl[T : ToJson] ToJson for Option[T] with to_json(self) {
+pub impl[T : ToJson] ToJson for T? with to_json(self) {
   match self {
     Some(x) => x.to_json()
     None => @json.JsonValue::Null
@@ -28,7 +34,8 @@ pub fn stringify(
   ~newline : Bool = false
 ) -> String {
   match json {
-    @json.JsonValue::Boolean(b) => if b { "true" } else { "false" }
+    @json.JsonValue::True => "true"
+    @json.JsonValue::False => "false"
     @json.JsonValue::String(s) => "\"\(s)\""
     @json.JsonValue::Number(n) => {
       let i = n.to_int()
@@ -92,16 +99,16 @@ impl ToJson for Array[ToJson] with to_json(self) {
 
 }
 
-impl ToJson for @immut/sorted_map.Map[String, ToJson] with to_json(self) {
-  @json.JsonValue::Object(self.map(fn(v) { v.to_json() }))
+impl ToJson for Map[String, ToJson] with to_json(self) {
+  let m = Map::new()
+  self.iter(fn(k, v) { m[k] = v.to_json() })
+  @json.JsonValue::Object(m)
 }
 
 pub fn from_entries(members : Array[(String, ToJson)]) -> @json.JsonValue {
-  @json.JsonValue::Object(
-    @immut/sorted_map.Map::from_array(
-      members.map(fn(k) { (k.0, k.1.to_json()) }),
-    ),
-  )
+  let m = Map::new()
+  members.iter(fn(t) { m[t.0] = t.1.to_json() })
+  @json.JsonValue::Object(m)
 }
 
 pub fn to_json[T : ToJson](x : T) -> @json.JsonValue {
@@ -167,7 +174,7 @@ test {
 // -----------
 priv struct TestTree {
   val : Int
-  child : Option[TestTree]
+  child : TestTree?
 }
 
 impl ToJson for TestTree with to_json(self) {
@@ -179,7 +186,8 @@ test {
   let j = to_json(v)
   inspect(
     j,
-    content="Object(Map::[(\"val\", Number(1.0)), (\"child\", Object(Map::[(\"val\", Number(2.0)), (\"child\", Null)]))])",
+    // content="Object(Map::[(\"val\", Number(1.0)), (\"child\", Object(Map::[(\"val\", Number(2.0)), (\"child\", Null)]))])",
+    content="Object(Map::[{val:Number(1.0)}, {child:Object(Map::[{val:Number(2.0)}, {child:Null}])}])",
   )?
   inspect(
     stringify(j),

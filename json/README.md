@@ -2,6 +2,15 @@
 
 json utils
 
+This version has been updated for MoonBit:
+
+```bash
+$ moon version
+moon 0.1.20240611 (30f6d4b 2024-06-11)
+```
+
+To install:
+
 ```bash
 $ moon add gmlewis/json
 ```
@@ -62,7 +71,7 @@ test {
   let j = @jsonutil.to_json(v)
   inspect(
     j,
-    content="Object(Map::[(\"val\", Number(1.0)), (\"child\", Object(Map::[(\"val\", Number(2.0)), (\"child\", Null)]))])",
+    content="Object(Map::[{val:Number(1.0)}, {child:Object(Map::[{val:Number(2.0)}, {child:Null}])}])",
   )?
   inspect(@jsonutil.stringify(j), content="{val:1,child:{val:2,child:null}}")?
 }
