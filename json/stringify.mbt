@@ -186,8 +186,7 @@ test {
   let j = to_json(v)
   inspect(
     j,
-    // content="Object(Map::[(\"val\", Number(1.0)), (\"child\", Object(Map::[(\"val\", Number(2.0)), (\"child\", Null)]))])",
-    content="Object(Map::[{val:Number(1.0)}, {child:Object(Map::[{val:Number(2.0)}, {child:Null}])}])",
+    content="Object({val:Number(1.0), child:Object({val:Number(2.0), child:Null})})",
   )?
   inspect(
     stringify(j),
