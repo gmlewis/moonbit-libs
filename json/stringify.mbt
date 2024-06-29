@@ -47,7 +47,7 @@ pub fn stringify(
     }
     @json.JsonValue::Array(a) => {
       let mut s = "[" + if newline { "\n" } else { "" }
-      a.iteri(
+      a.eachi(
         fn(i, v) {
           let suffix = if i == a.length() - 1 { "" } else { "," } + if newline {
               "\n"
@@ -68,7 +68,7 @@ pub fn stringify(
     @json.JsonValue::Object(members) => {
       let mut s = "{" + if newline { "\n" } else { "" }
       let pad = if spaces > 0 { " " } else { "" }
-      members.iteri(
+      members.eachi(
         fn(i, k, v) {
           // members.size()
           let is_last = i == members.size() - 1
@@ -93,7 +93,7 @@ impl ToJson for Array[ToJson] with to_json(self) {
 
   // impl ToJson for Array[ToJson] with to_json(self) {
   //   let new_values : Array[@json.JsonValue] = Array::new()
-  //   self.iter(fn(x) { new_values.push(x.to_json()) })
+  //   self.each(fn(x) { new_values.push(x.to_json()) })
   //   @json.JsonValue::Array(new_values)
   // }
 
@@ -101,13 +101,13 @@ impl ToJson for Array[ToJson] with to_json(self) {
 
 impl ToJson for Map[String, ToJson] with to_json(self) {
   let m = Map::new()
-  self.iter(fn(k, v) { m[k] = v.to_json() })
+  self.each(fn(k, v) { m[k] = v.to_json() })
   @json.JsonValue::Object(m)
 }
 
 pub fn from_entries(members : Array[(String, ToJson)]) -> @json.JsonValue {
   let m = Map::new()
-  members.iter(fn(t) { m[t.0] = t.1.to_json() })
+  members.each(fn(t) { m[t.0] = t.1.to_json() })
   @json.JsonValue::Object(m)
 }
 
