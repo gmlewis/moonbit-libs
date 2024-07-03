@@ -148,7 +148,7 @@ test {
       #|  "f": false
       #|}
     ,
-  )?
+  )!
 }
 
 test {
@@ -159,7 +159,7 @@ test {
     ,
   ).unwrap()
   let s = stringify(j)
-  inspect(s, content="{\"a\":1}")?
+  inspect(s, content="{\"a\":1}")!
 }
 
 fn is_int(x : Double) -> Bool {
@@ -167,8 +167,8 @@ fn is_int(x : Double) -> Bool {
 }
 
 test {
-  inspect(is_int(1.0), content="true")?
-  inspect(is_int(1.1), content="false")?
+  inspect(is_int(1.0), content="true")!
+  inspect(is_int(1.1), content="false")!
 }
 
 // -----------
@@ -187,9 +187,9 @@ test {
   inspect(
     j,
     content="Object({val:Number(1.0), child:Object({val:Number(2.0), child:Null})})",
-  )?
+  )!
   inspect(
     stringify(j),
     content="{\"val\":1,\"child\":{\"val\":2,\"child\":null}}",
-  )?
+  )!
 }
