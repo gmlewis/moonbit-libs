@@ -128,7 +128,7 @@ test {
     #|  "f": false
     #|}
     ,
-  ).unwrap()
+  )!!.unwrap()
   let s = stringify(j, spaces=2, newline=true)
   inspect(
     s,
@@ -157,7 +157,7 @@ test {
     #|  "a": 1
     #|}
     ,
-  ).unwrap()
+  )!!.unwrap()
   let s = stringify(j)
   inspect(s, content="{\"a\":1}")!
 }

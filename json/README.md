@@ -6,7 +6,7 @@ This version has been updated for MoonBit:
 
 ```bash
 $ moon version
-moon 0.1.20240627 (eb9df35 2024-06-27)
+moon 0.1.20240708 (4e51712 2024-07-08)
 ```
 
 To install:
@@ -47,7 +47,7 @@ fn main {
     #|  "f": false
     #|}
     ,
-  ).unwrap()
+  )!!.unwrap()
   // like JSON.stringify({}, null, 2)
   let s = @jsonutil.stringify(j, spaces=2, newline=true)
 }
