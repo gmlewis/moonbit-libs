@@ -6,7 +6,7 @@ This version has been updated for MoonBit:
 
 ```bash
 $ moon version
-moon 0.1.20240708 (4e51712 2024-07-08)
+moon 0.1.20240715 (0188781 2024-07-15)
 ```
 
 To install:
