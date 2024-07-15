@@ -96,7 +96,6 @@ impl ToJson for Array[ToJson] with to_json(self) {
   //   self.each(fn(x) { new_values.push(x.to_json()) })
   //   @json.JsonValue::Array(new_values)
   // }
-
 }
 
 impl ToJson for Map[String, ToJson] with to_json(self) {
@@ -186,7 +185,7 @@ test {
   let j = to_json(v)
   inspect(
     j,
-    content="Object({val:Number(1.0), child:Object({val:Number(2.0), child:Null})})",
+    content="Object({val: Number(1.0), child:Object({val: Number(2.0), child:Null})})",
   )!
   inspect(
     stringify(j),
