@@ -88,7 +88,7 @@ pub fn stringify(
   }
 }
 
-impl ToJson for Array[ToJson] with to_json(self) {
+pub impl ToJson for Array[ToJson] with to_json(self) {
   @json.JsonValue::Array(self.map(fn(x) { x.to_json() }))
 
   // impl ToJson for Array[ToJson] with to_json(self) {
@@ -98,7 +98,7 @@ impl ToJson for Array[ToJson] with to_json(self) {
   // }
 }
 
-impl ToJson for Map[String, ToJson] with to_json(self) {
+pub impl ToJson for Map[String, ToJson] with to_json(self) {
   let m = Map::new()
   self.each(fn(k, v) { m[k] = v.to_json() })
   @json.JsonValue::Object(m)
