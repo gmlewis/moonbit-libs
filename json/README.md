@@ -66,7 +66,7 @@ impl @jsonutil.ToJson for TestTree with to_json(self) {
   @jsonutil.from_entries([("val", self.val), ("child", self.child)])
 }
 
-test {
+test "to_json on TestTree" {
   let v : TestTree = { val: 1, child: Some({ val: 2, child: None }) }
   let j = @jsonutil.to_json(v)
   inspect(

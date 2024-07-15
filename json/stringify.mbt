@@ -27,6 +27,77 @@ pub impl[T : ToJson] ToJson for T? with to_json(self) {
   }
 }
 
+pub impl[T : ToJson] ToJson for Array[T] with to_json(self) {
+  @json.JsonValue::Array(self.map(fn(x) { x.to_json() }))
+}
+
+pub fn to_json[T : ToJson](x : T) -> @json.JsonValue {
+  x.to_json()
+}
+
+test "to_json on Array[String]" {
+  let v : Array[String] = ["one", "two", "three"]
+  let j = to_json(v)
+  inspect(
+    j,
+    content=
+      #|Array([String(\"one\"), String(\"two\"), String(\"three\")])
+    ,
+  )!
+  inspect(
+    stringify(j),
+    content=
+      #|["one","two","three"]
+    ,
+  )!
+}
+
+test "to_json on Array[Int]" {
+  let v : Array[Int] = [1, 2, 3]
+  let j = to_json(v)
+  inspect(
+    j,
+    content=
+      #|Array([Number(1.0), Number(2.0), Number(3.0)])
+    ,
+  )!
+  inspect(
+    stringify(j),
+    content=
+      #|[1,2,3]
+    ,
+  )!
+}
+
+test "to_json on Array[Double]" {
+  let v : Array[Double] = [0.0, 0.1, 0.2, 0.3]
+  let j = to_json(v)
+  inspect(
+    j,
+    content=
+      #|Array([Number(0.0), Number(0.1), Number(0.2), Number(0.3)])
+    ,
+  )!
+  inspect(
+    stringify(j),
+    content=
+      #|[0,0.1,0.2,0.3]
+    ,
+  )!
+}
+
+pub impl ToJson for Map[String, ToJson] with to_json(self) {
+  let m = Map::new()
+  self.each(fn(k, v) { m[k] = v.to_json() })
+  @json.JsonValue::Object(m)
+}
+
+pub fn from_entries(members : Array[(String, ToJson)]) -> @json.JsonValue {
+  let m = Map::new()
+  members.each(fn(t) { m[t.0] = t.1.to_json() })
+  @json.JsonValue::Object(m)
+}
+
 pub fn stringify(
   json : @json.JsonValue,
   ~depth : Int = 0,
@@ -88,33 +159,7 @@ pub fn stringify(
   }
 }
 
-pub impl ToJson for Array[ToJson] with to_json(self) {
-  @json.JsonValue::Array(self.map(fn(x) { x.to_json() }))
-
-  // impl ToJson for Array[ToJson] with to_json(self) {
-  //   let new_values : Array[@json.JsonValue] = Array::new()
-  //   self.each(fn(x) { new_values.push(x.to_json()) })
-  //   @json.JsonValue::Array(new_values)
-  // }
-}
-
-pub impl ToJson for Map[String, ToJson] with to_json(self) {
-  let m = Map::new()
-  self.each(fn(k, v) { m[k] = v.to_json() })
-  @json.JsonValue::Object(m)
-}
-
-pub fn from_entries(members : Array[(String, ToJson)]) -> @json.JsonValue {
-  let m = Map::new()
-  members.each(fn(t) { m[t.0] = t.1.to_json() })
-  @json.JsonValue::Object(m)
-}
-
-pub fn to_json[T : ToJson](x : T) -> @json.JsonValue {
-  x.to_json()
-}
-
-test {
+test "stringify object with indentation" {
   let j = @json.parse(
     #|{
     #|  "a": 1.1,
@@ -150,7 +195,7 @@ test {
   )!
 }
 
-test {
+test "stringify object no indentation" {
   let j = @json.parse(
     #|{
     #|  "a": 1
@@ -165,7 +210,7 @@ fn is_int(x : Double) -> Bool {
   x == x.to_int().to_double()
 }
 
-test {
+test "is_int" {
   inspect(is_int(1.0), content="true")!
   inspect(is_int(1.1), content="false")!
 }
@@ -180,7 +225,7 @@ impl ToJson for TestTree with to_json(self) {
   from_entries([("val", self.val), ("child", self.child)])
 }
 
-test {
+test "to_json on TestTree" {
   let v : TestTree = { val: 1, child: Some({ val: 2, child: None }) }
   let j = to_json(v)
   inspect(
