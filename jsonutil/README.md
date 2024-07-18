@@ -1,31 +1,30 @@
-# gmlewis/json
+# gmlewis/jsonutil
 
-json utils
+This is a fork of: https://github.com/mizchi/moonbit-libs/tree/main/json
+
+JSON utilities
 
 This version has been updated for MoonBit:
 
 ```bash
-$ moon version
-moon 0.1.20240715 (0188781 2024-07-15)
+$ moon version --all
+moon 0.1.20240718 (e1aaec7 2024-07-18) ~/.moon/bin/moon
+moonc v0.1.20240718+32d3b4fac ~/.moon/bin/moonc
+moonrun 0.1.20240716 (08bce9c 2024-07-16) ~/.moon/bin/moonrun
 ```
 
 To install:
 
 ```bash
-$ moon add gmlewis/json
+$ moon add gmlewis/jsonutil
 ```
 
 moon.pkg.json
 
-Avoid `json` to use builtin `@json`
-
 ```json
 {
   "import": [
-    {
-      "path": "gmlewis/json",
-      "alias": "jsonutil"
-    }
+    "gmlewis/jsonutil"
   ]
 }
 ```
