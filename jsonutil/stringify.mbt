@@ -38,52 +38,52 @@ pub fn to_json[T : ToJson](x : T) -> @json.JsonValue {
 test "to_json on Array[String]" {
   let v : Array[String] = ["one", "two", "three"]
   let j = to_json(v)
-  inspect(
+  inspect!(
     j,
     content=
       #|Array([String(\"one\"), String(\"two\"), String(\"three\")])
     ,
-  )!
-  inspect(
+  )
+  inspect!(
     stringify(j),
     content=
       #|["one","two","three"]
     ,
-  )!
+  )
 }
 
 test "to_json on Array[Int]" {
   let v : Array[Int] = [1, 2, 3]
   let j = to_json(v)
-  inspect(
+  inspect!(
     j,
     content=
       #|Array([Number(1.0), Number(2.0), Number(3.0)])
     ,
-  )!
-  inspect(
+  )
+  inspect!(
     stringify(j),
     content=
       #|[1,2,3]
     ,
-  )!
+  )
 }
 
 test "to_json on Array[Double]" {
   let v : Array[Double] = [0.0, 0.1, 0.2, 0.3]
   let j = to_json(v)
-  inspect(
+  inspect!(
     j,
     content=
       #|Array([Number(0.0), Number(0.1), Number(0.2), Number(0.3)])
     ,
-  )!
-  inspect(
+  )
+  inspect!(
     stringify(j),
     content=
       #|[0,0.1,0.2,0.3]
     ,
-  )!
+  )
 }
 
 pub impl ToJson for Map[String, ToJson] with to_json(self) {
@@ -174,7 +174,7 @@ test "stringify object with indentation" {
     ,
   )!!.unwrap()
   let s = stringify(j, spaces=2, newline=true)
-  inspect(
+  inspect!(
     s,
     content=
       #|{
@@ -192,7 +192,7 @@ test "stringify object with indentation" {
       #|  "f": false
       #|}
     ,
-  )!
+  )
 }
 
 test "stringify object no indentation" {
@@ -203,7 +203,7 @@ test "stringify object no indentation" {
     ,
   )!!.unwrap()
   let s = stringify(j)
-  inspect(s, content="{\"a\":1}")!
+  inspect!(s, content="{\"a\":1}")
 }
 
 fn is_int(x : Double) -> Bool {
@@ -211,8 +211,8 @@ fn is_int(x : Double) -> Bool {
 }
 
 test "is_int" {
-  inspect(is_int(1.0), content="true")!
-  inspect(is_int(1.1), content="false")!
+  inspect!(is_int(1.0), content="true")
+  inspect!(is_int(1.1), content="false")
 }
 
 // -----------
@@ -228,12 +228,12 @@ impl ToJson for TestTree with to_json(self) {
 test "to_json on TestTree" {
   let v : TestTree = { val: 1, child: Some({ val: 2, child: None }) }
   let j = to_json(v)
-  inspect(
+  inspect!(
     j,
     content="Object({val: Number(1.0), child:Object({val: Number(2.0), child:Null})})",
-  )!
-  inspect(
+  )
+  inspect!(
     stringify(j),
     content="{\"val\":1,\"child\":{\"val\":2,\"child\":null}}",
-  )!
+  )
 }
