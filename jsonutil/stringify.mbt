@@ -41,7 +41,7 @@ test "to_json on Array[String]" {
   inspect!(
     j,
     content=
-      #|Array([String(\"one\"), String(\"two\"), String(\"three\")])
+      #|Array([String("one"), String("two"), String("three")])
     ,
   )
   inspect!(
@@ -173,6 +173,7 @@ test "stringify object with indentation" {
     #|}
     ,
   )!!.unwrap()
+  // like JSON.stringify({}, null, 2)
   let s = stringify(j, spaces=2, newline=true)
   inspect!(
     s,
@@ -230,7 +231,9 @@ test "to_json on TestTree" {
   let j = to_json(v)
   inspect!(
     j,
-    content="Object({val: Number(1.0), child:Object({val: Number(2.0), child:Null})})",
+    content=
+      #|Object("val": Number(1.0), "child": Object("val": Number(2.0), "child": Null})})
+    ,
   )
   inspect!(
     stringify(j),

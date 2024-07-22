@@ -8,8 +8,8 @@ This version has been updated for MoonBit:
 
 ```bash
 $ moon version --all
-moon 0.1.20240718 (e1aaec7 2024-07-18) ~/.moon/bin/moon
-moonc v0.1.20240718+32d3b4fac ~/.moon/bin/moonc
+moon 0.1.20240719 (058aaca 2024-07-19) ~/.moon/bin/moon
+moonc v0.1.20240719+7a0c5feac ~/.moon/bin/moonc
 moonrun 0.1.20240716 (08bce9c 2024-07-16) ~/.moon/bin/moonrun
 ```
 
@@ -48,7 +48,7 @@ fn main {
     ,
   )!!.unwrap()
   // like JSON.stringify({}, null, 2)
-  let s = @jsonutil.stringify(j, spaces=2, newline=true)
+  let s = stringify(j, spaces=2, newline=true)
 }
 ```
 
@@ -57,22 +57,26 @@ Implment `ToJson` for struct
 ```rust
 priv struct TestTree {
   val : Int
-  child : Option[TestTree]
+  child : TestTree?
 }
 
-impl @jsonutil.ToJson for TestTree with to_json(self) {
-  // list ToJson values with keys
-  @jsonutil.from_entries([("val", self.val), ("child", self.child)])
+impl ToJson for TestTree with to_json(self) {
+  from_entries([("val", self.val), ("child", self.child)])
 }
 
 test "to_json on TestTree" {
   let v : TestTree = { val: 1, child: Some({ val: 2, child: None }) }
-  let j = @jsonutil.to_json(v)
-  inspect(
+  let j = to_json(v)
+  inspect!(
     j,
-    content="Object(Map::[{val:Number(1.0)}, {child:Object(Map::[{val:Number(2.0)}, {child:Null}])}])",
-  )?
-  inspect(@jsonutil.stringify(j), content="{val:1,child:{val:2,child:null}}")?
+    content=
+      #|Object("val": Number(1.0), "child": Object("val": Number(2.0), "child": Null})})
+    ,
+  )
+  inspect!(
+    stringify(j),
+    content="{\"val\":1,\"child\":{\"val\":2,\"child\":null}}",
+  )
 }
 ```
 
