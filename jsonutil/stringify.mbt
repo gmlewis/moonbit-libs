@@ -232,7 +232,7 @@ test "to_json on TestTree" {
   inspect!(
     j,
     content=
-      #|Object("val": Number(1.0), "child": Object("val": Number(2.0), "child": Null})})
+      #|Object({"val": Number(1.0), "child": Object({"val": Number(2.0), "child": Null})})
     ,
   )
   inspect!(
