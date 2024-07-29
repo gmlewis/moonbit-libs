@@ -160,7 +160,7 @@ pub fn stringify(
 }
 
 test "stringify object with indentation" {
-  let j = @json.parse(
+  let j = @json.parse?(
     #|{
     #|  "a": 1.1,
     #|  "b": [1, 2, 3],
@@ -172,7 +172,7 @@ test "stringify object with indentation" {
     #|  "f": false
     #|}
     ,
-  )!!.unwrap()
+  ).unwrap()
   // like JSON.stringify({}, null, 2)
   let s = stringify(j, spaces=2, newline=true)
   inspect!(
@@ -197,12 +197,12 @@ test "stringify object with indentation" {
 }
 
 test "stringify object no indentation" {
-  let j = @json.parse(
+  let j = @json.parse?(
     #|{
     #|  "a": 1
     #|}
     ,
-  )!!.unwrap()
+  ).unwrap()
   let s = stringify(j)
   inspect!(s, content="{\"a\":1}")
 }

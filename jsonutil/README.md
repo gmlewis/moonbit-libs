@@ -8,8 +8,8 @@ This version has been updated for MoonBit:
 
 ```bash
 $ moon version --all
-moon 0.1.20240723 (2c8c62f 2024-07-23) ~/.moon/bin/moon
-moonc v0.1.20240723+155a870f3 ~/.moon/bin/moonc
+moon 0.1.20240726 (67f143f 2024-07-26) ~/.moon/bin/moon
+moonc v0.1.20240729+3efb92d5a ~/.moon/bin/moonc
 moonrun 0.1.20240716 (08bce9c 2024-07-16) ~/.moon/bin/moonrun
 ```
 
@@ -34,7 +34,7 @@ moon.pkg.json
 ```rust
 fn main {
   // use moonbitlang/core/json
-  let j = @json.parse(
+  let j = @json.parse?(
     #|{
     #|  "a": 1.1,
     #|  "b": [1, 2, 3],
@@ -46,7 +46,7 @@ fn main {
     #|  "f": false
     #|}
     ,
-  )!!.unwrap()
+  ).unwrap()
   // like JSON.stringify({}, null, 2)
   let s = stringify(j, spaces=2, newline=true)
 }
