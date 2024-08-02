@@ -98,6 +98,57 @@ pub fn from_entries(members : Array[(String, ToJson)]) -> @json.JsonValue {
   @json.JsonValue::Object(m)
 }
 
+test "to_json on Map[String,Int]" {
+  let v : Map[String, ToJson] = { "0": 1, "1": 2, "2": 3 }
+  let j = to_json(v)
+  inspect!(
+    j,
+    content=
+      #|Object({"0": Number(1.0), "1": Number(2.0), "2": Number(3.0)})
+    ,
+  )
+  inspect!(
+    stringify(j),
+    content=
+      #|{"0":1,"1":2,"2":3}
+    ,
+  )
+}
+
+test "to_json on Map[String,Double]" {
+  let v : Map[String, ToJson] = { "0": 1.0, "1": 2.0, "2": 3.0 }
+  let j = to_json(v)
+  inspect!(
+    j,
+    content=
+      #|Object({"0": Number(1.0), "1": Number(2.0), "2": Number(3.0)})
+    ,
+  )
+  inspect!(
+    stringify(j),
+    content=
+      #|{"0":1,"1":2,"2":3}
+    ,
+  )
+}
+
+test "to_json on Map[String,String]" {
+  let v : Map[String, ToJson] = { "0": "1", "1": "2", "2": "3" }
+  let j = to_json(v)
+  inspect!(
+    j,
+    content=
+      #|Object({"0": String("1"), "1": String("2"), "2": String("3")})
+    ,
+  )
+  inspect!(
+    stringify(j),
+    content=
+      #|{"0":"1","1":"2","2":"3"}
+    ,
+  )
+}
+
 pub fn stringify(
   json : @json.JsonValue,
   ~depth : Int = 0,
