@@ -99,7 +99,10 @@ pub fn from_entries(members : Array[(String, ToJson)]) -> @json.JsonValue {
 }
 
 test "to_json on Map[String,Int]" {
-  let v : Map[String, ToJson] = { "0": 1, "1": 2, "2": 3 }
+  let v : Map[String, Int] = { "0": 1, "1": 2, "2": 3 }
+  let v : Map[String, ToJson] = Map::from_array(
+    v.iter().map(fn(kv) -> (String, ToJson) { (kv.0, to_json(kv.1)) }).collect(),
+  )
   let j = to_json(v)
   inspect!(
     j,
@@ -116,7 +119,10 @@ test "to_json on Map[String,Int]" {
 }
 
 test "to_json on Map[String,Double]" {
-  let v : Map[String, ToJson] = { "0": 1.0, "1": 2.0, "2": 3.0 }
+  let v : Map[String, Double] = { "0": 1.0, "1": 2.0, "2": 3.0 }
+  let v : Map[String, ToJson] = Map::from_array(
+    v.iter().map(fn(kv) -> (String, ToJson) { (kv.0, to_json(kv.1)) }).collect(),
+  )
   let j = to_json(v)
   inspect!(
     j,
@@ -133,7 +139,10 @@ test "to_json on Map[String,Double]" {
 }
 
 test "to_json on Map[String,String]" {
-  let v : Map[String, ToJson] = { "0": "1", "1": "2", "2": "3" }
+  let v : Map[String, String] = { "0": "1", "1": "2", "2": "3" }
+  let v : Map[String, ToJson] = Map::from_array(
+    v.iter().map(fn(kv) -> (String, ToJson) { (kv.0, to_json(kv.1)) }).collect(),
+  )
   let j = to_json(v)
   inspect!(
     j,
