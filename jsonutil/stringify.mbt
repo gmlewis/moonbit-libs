@@ -158,7 +158,7 @@ pub fn stringify(
   match json {
     @json.JsonValue::True => "true"
     @json.JsonValue::False => "false"
-    @json.JsonValue::String(s) => "\"\(s)\""
+    @json.JsonValue::String(s) => "\"\{s}\""
     @json.JsonValue::Number(n) => {
       let i = n.to_int()
       if i.to_double() == n {
@@ -200,7 +200,7 @@ pub fn stringify(
               ""
             }
           let vr = stringify(v, depth=depth + 1, ~spaces, ~newline)
-          s += String::make((depth + 1) * spaces, ' ') + "\"\(k)\":\(pad)\(vr)\(last)"
+          s += String::make((depth + 1) * spaces, ' ') + "\"\{k}\":\{pad}\{vr}\{last}"
         },
       )
       s += String::make(depth * spaces, ' ') + "}"
