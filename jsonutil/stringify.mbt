@@ -1,13 +1,17 @@
+/// @alert deprecated "Use standard library instead"
 pub trait ToJson {
   to_json(Self) -> @json.JsonValue
 }
 
+/// @alert deprecated "Use standard library instead"
 pub impl ToJson for Int with to_json(self) {
   @json.JsonValue::Number(self.to_double())
 }
 
+/// @alert deprecated "Use standard library instead"
 pub impl ToJson for String with to_json(self) { @json.JsonValue::String(self) }
 
+/// @alert deprecated "Use standard library instead"
 pub impl ToJson for Bool with to_json(self) {
   if self {
     @json.JsonValue::True
@@ -16,10 +20,13 @@ pub impl ToJson for Bool with to_json(self) {
   }
 }
 
+/// @alert deprecated "Use standard library instead"
 pub impl ToJson for Double with to_json(self) { @json.JsonValue::Number(self) }
 
+/// @alert deprecated "Use standard library instead"
 pub impl ToJson for Unit with to_json(_self) { @json.JsonValue::Null }
 
+/// @alert deprecated "Use standard library instead"
 pub impl[T : ToJson] ToJson for T? with to_json(self) {
   match self {
     Some(x) => x.to_json()
@@ -27,10 +34,12 @@ pub impl[T : ToJson] ToJson for T? with to_json(self) {
   }
 }
 
+/// @alert deprecated "Use standard library instead"
 pub impl[T : ToJson] ToJson for Array[T] with to_json(self) {
   @json.JsonValue::Array(self.map(fn(x) { x.to_json() }))
 }
 
+/// @alert deprecated "Use standard library instead"
 pub fn to_json[T : ToJson](x : T) -> @json.JsonValue {
   x.to_json()
 }
@@ -86,12 +95,14 @@ test "to_json on Array[Double]" {
   )
 }
 
+/// @alert deprecated "Use standard library instead"
 pub impl[T : ToJson] ToJson for Map[String, T] with to_json(self) {
   let m = Map::new(capacity=self.size())
   self.each(fn(k, v) { m[k] = v.to_json() })
   @json.JsonValue::Object(m)
 }
 
+/// @alert deprecated "Use standard library instead"
 pub fn from_entries(members : Array[(String, ToJson)]) -> @json.JsonValue {
   let m = Map::new(capacity=members.length())
   members.each(fn(t) { m[t.0] = t.1.to_json() })
@@ -149,6 +160,7 @@ test "to_json on Map[String,String]" {
   )
 }
 
+/// @alert deprecated "Use standard library instead"
 pub fn stringify(
   json : @json.JsonValue,
   ~depth : Int = 0,
@@ -171,17 +183,11 @@ pub fn stringify(
       let mut s = "[" + if newline { "\n" } else { "" }
       a.eachi(
         fn(i, v) {
-          let suffix = if i == a.length() - 1 { "" } else { "," } + if newline {
-              "\n"
-            } else {
-              ""
-            }
-          s += String::make((depth + 1) * spaces, ' ') + stringify(
-              v,
-              depth=depth + 1,
-              ~spaces,
-              ~newline,
-            ) + suffix
+          let suffix = if i == a.length() - 1 { "" } else { "," } +
+            if newline { "\n" } else { "" }
+          s += String::make((depth + 1) * spaces, ' ') +
+            stringify(v, depth=depth + 1, ~spaces, ~newline) +
+            suffix
         },
       )
       s += String::make(depth * spaces, ' ') + "]"
@@ -194,13 +200,11 @@ pub fn stringify(
         fn(i, k, v) {
           // members.size()
           let is_last = i == members.size() - 1
-          let last = if is_last { "" } else { "," } + if newline {
-              "\n"
-            } else {
-              ""
-            }
+          let last = if is_last { "" } else { "," } +
+            if newline { "\n" } else { "" }
           let vr = stringify(v, depth=depth + 1, ~spaces, ~newline)
-          s += String::make((depth + 1) * spaces, ' ') + "\"\{k}\":\{pad}\{vr}\{last}"
+          s += String::make((depth + 1) * spaces, ' ') +
+            "\"\{k}\":\{pad}\{vr}\{last}"
         },
       )
       s += String::make(depth * spaces, ' ') + "}"
@@ -258,6 +262,7 @@ test "stringify object no indentation" {
   inspect!(s, content="{\"a\":1}")
 }
 
+/// @alert deprecated "Use standard library instead"
 fn is_int(x : Double) -> Bool {
   x == x.to_int().to_double()
 }
@@ -268,11 +273,13 @@ test "is_int" {
 }
 
 // -----------
+/// @alert deprecated "Use standard library instead"
 priv struct TestTree {
   val : Int
   child : TestTree?
 }
 
+/// @alert deprecated "Use standard library instead"
 impl ToJson for TestTree with to_json(self) {
   from_entries([("val", self.val), ("child", self.child)])
 }
